@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enchere index{% endblock %}
+
+{% block body %}
+    <h1>Enchere index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for enchere in encheres %}
+            <tr>
+                <td>{{ enchere.id }}</td>
+                <td>{{ enchere.montant }}</td>
+                <td>{{ enchere.date ? enchere.date|date('Y-m-d') : '' }}</td>
+                <td>{{ enchere.heure ? enchere.heure|date('H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('enchere_show', {'id': enchere.id}) }}">show</a>
+                    <a href="{{ path('enchere_edit', {'id': enchere.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('enchere_new') }}">Create new</a>
+{% endblock %}

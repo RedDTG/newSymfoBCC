@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vente{% endblock %}
+
+{% block body %}
+    <h1>Vente</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vente.id }}</td>
+            </tr>
+            <tr>
+                <th>TypeDeVente</th>
+                <td>{{ vente.typeDeVente }}</td>
+            </tr>
+            <tr>
+                <th>Devise</th>
+                <td>{{ vente.devise }}</td>
+            </tr>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ vente.dateDebut ? vente.dateDebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ vente.dateFin ? vente.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HeureDebut</th>
+                <td>{{ vente.heureDebut ? vente.heureDebut|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HeureFin</th>
+                <td>{{ vente.heureFin ? vente.heureFin|date('H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('vente_index') }}">back to list</a>
+
+    <a href="{{ path('vente_edit', {'id': vente.id}) }}">edit</a>
+
+    {{ include('vente/_delete_form.html.twig') }}
+{% endblock %}

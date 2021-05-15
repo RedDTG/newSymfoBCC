@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vente index{% endblock %}
+
+{% block body %}
+    <br>
+    <div style="text-align: center;"><h1>Bienvenue sur BidCardCoin !</h1></div>
+    <br>
+    <div style="text-align: center;"><h3>Voici la liste des ventes en cours</h3></div>
+    <br>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>TypeDeVente</th>
+            <th>Devise</th>
+            <th>DateFin</th>
+            <th>HeureFin</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for vente in ventes %}
+            <tr>
+                <td>{{ vente.typeDeVente }}</td>
+                <td>{{ vente.devise }}</td>
+                <td>{{ vente.dateFin ? vente.dateFin|date('Y-m-d') : '' }}</td>
+                <td>{{ vente.heureFin ? vente.heureFin|date('H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('vente_show/id/lots', {'id': vente.id}) }}">voir les lots</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
