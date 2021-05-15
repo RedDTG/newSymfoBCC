@@ -39,6 +39,11 @@ class Acheteur
         $this->encheres = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getIdUtilisateur()->getIdPersonne()->getEmail();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

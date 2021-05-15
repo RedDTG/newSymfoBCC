@@ -3,36 +3,30 @@
 {% block title %}Lot{% endblock %}
 
 {% block body %}
-    <h1>Lot</h1>
+    <h1>{{ lot.nom }}</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ lot.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ lot.nom }}</td>
-            </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ lot.description }}</td>
             </tr>
             <tr>
-                <th>PrixDepart</th>
-                <td>{{ lot.prixDepart }}</td>
+                <th>Prix de départ</th>
+                <td>{{ lot.prixDepart }} €</td>
             </tr>
             <tr>
-                <th>IsVendu</th>
-                <td>{{ lot.isVendu ? 'Yes' : 'No' }}</td>
+                <th>Meilleure enchère</th>
+                <td>{{ bestEnchere.montant }} €</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ lot.isVendu ? 'Vendu' : 'En vente' }}</td>
             </tr>
         </tbody>
     </table>
 
+    <a href="{{ path('') }}">faire une enchère</a>
     <a href="{{ path('lot_index') }}">back to list</a>
 
-    <a href="{{ path('lot_edit', {'id': lot.id}) }}">edit</a>
-
-    {{ include('lot/_delete_form.html.twig') }}
 {% endblock %}

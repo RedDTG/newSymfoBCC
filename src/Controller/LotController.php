@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Enchere;
 use App\Entity\Lot;
+use App\Form\EnchereType;
 use App\Form\LotType;
+use App\Repository\EnchereRepository;
 use App\Repository\LotRepository;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,10 +47,15 @@ class LotController extends AbstractController
     }
 
     #[Route('/{id}', name: 'lot_show', methods: ['GET'])]
-    public function show(Lot $lot): Response
+    public function show(Lot $lot, EnchereRepository $encheres): Response
     {
+
         return $this->render('lot/show.html.twig', [
             'lot' => $lot,
+            'bestEnchere' => $encheres->findBy(
+                ['idLot' => $lot->getId()],
+                ['montant' =>'DESC'])
+                [0]
         ]);
     }
 
@@ -78,5 +87,26 @@ class LotController extends AbstractController
         }
 
         return $this->redirectToRoute('lot_index');
+    }
+
+    #[Route('/{id}', name: 'lot_encherir', methods: ['GET', 'POST'])]
+    public function encherir(Request $request, Lot $lot): Response
+    {
+        $enchere = new Enchere();
+        $enchere->setIdLot($lot->getId());
+        $form = $this->createForm(EnchereType::class, $enchere);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($enchere);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('lot_index');
+        }
+
+        return $this->render('lot/edit.html.twig', [
+            'lot' => $lot,
+            'form' => $form->createView(),
+        ]);
     }
 }

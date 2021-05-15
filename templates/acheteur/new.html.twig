@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Acheteur{% endblock %}
+
+{% block body %}
+    <h1>Create new Acheteur</h1>
+
+    {{ include('acheteur/_form.html.twig') }}
+
+    <a href="{{ path('acheteur_index') }}">back to list</a>
+{% endblock %}

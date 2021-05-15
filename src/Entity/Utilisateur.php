@@ -53,6 +53,11 @@ class Utilisateur
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->getIdPersonne()->getEmail();
+    }
+
     public function getAdresse(): ?string
     {
         return $this->adresse;
