@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ enchere.id }}</td>
                 <td>{{ enchere.montant }}</td>
-                <td>{{ enchere.idAcheteur.idUtilisateur.pseudo }}</td>
+                <td>{{ enchere.idUtilisateur.pseudo }}</td>
                 <td>{{ enchere.date ? enchere.date|date('Y-m-d') : '' }}</td>
                 <td>{{ enchere.heure ? enchere.heure|date('H:i:s') : '' }}</td>
                 <td>

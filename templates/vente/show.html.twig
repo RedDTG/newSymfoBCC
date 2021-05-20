@@ -38,9 +38,46 @@
         </tbody>
     </table>
 
-    <a href="{{ path('vente_index') }}">back to list</a>
+    <br>
+    <br>
 
-    <a href="{{ path('vente_edit', {'id': vente.id}) }}">edit</a>
+    <h3>Liste des lots</h3>
 
-    {{ include('vente/_delete_form.html.twig') }}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prix de Depart</th>
+            <th>Meilleure enchère</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lot in lots %}
+            <tr>
+                <td>{{ lot.nom }}</td>
+                <td>{{ lot.prixDepart }} {{ vente.devise }}</td>
+                <td>{% for enchere in bestEncheres %}
+                        {% if enchere.idLot == lot %}
+                            {% if enchere.montant != -1 %}
+                                {{ enchere.montant }} {{ vente.devise }}
+                            {% else %}
+                                Aucune
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}</td>
+                <td>
+                    <a href="{{ path('lot_show', {'id': lot.id}) }}">enchérir</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('home') }}">back to list</a>
+
 {% endblock %}

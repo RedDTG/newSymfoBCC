@@ -19,6 +19,17 @@ class LotRepository extends ServiceEntityRepository
         parent::__construct($registry, Lot::class);
     }
 
+    public function recupBestEnchere($lotId)
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT e TOP
+            FROM App\Entity\Enchere e
+            WHERE e.idLot = :idLot
+            ORDER BY e.montant DESC
+            '
+        )->setParameter('idLot', $lotId)->getResult();
+    }
+
     // /**
     //  * @return Lot[] Returns an array of Lot objects
     //  */

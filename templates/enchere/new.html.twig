@@ -4,7 +4,10 @@
 
 {% block body %}
     <h1>Create new Enchere</h1>
-
+    <br>
+    La plus haute enchère pour ce lot est de {{ bestEnchere }}
+    <br>
+    <br>
     {{ include('enchere/_form.html.twig') }}
 
     <a href="{{ path('enchere_index') }}">back to list</a>

@@ -11,6 +11,7 @@
         <tr>
             <th>Nom</th>
             <th>Prix de Depart</th>
+            <th>Meilleure enchère</th>
             <th>actions</th>
         </tr>
         </thead>
@@ -19,6 +20,15 @@
             <tr>
                 <td>{{ lot.nom }}</td>
                 <td>{{ lot.prixDepart }}</td>
+                <td>{% for enchere in bestEncheres %}
+                            {% if enchere.idLot == lot %}
+                                {% if enchere.montant != -1 %}
+                                   {{ enchere.montant }}
+                                {% else %}
+                                    Aucune
+                                {% endif %}
+                            {% endif %}
+                    {% endfor %}</td>
                 <td>
                     <a href="{{ path('lot_show', {'id': lot.id}) }}">enchérir</a>
                 </td>

@@ -12,9 +12,12 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home', methods: ['GET'])]
     public function index(VenteRepository $venteRepository): Response
     {
+
+        $ventes = $venteRepository->recupVenteNow();
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'ventes' => $venteRepository->findAll(),
+            'ventes' => $ventes,
 
         ]);
     }

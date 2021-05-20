@@ -54,6 +54,11 @@ class Lot
      */
     private $produits;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Enchere::class, inversedBy="lots")
+     */
+    private $bestEnchere;
+
 
     public function __construct()
     {
@@ -187,6 +192,18 @@ class Lot
                 $produit->setIdLot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBestEnchere(): ?Enchere
+    {
+        return $this->bestEnchere;
+    }
+
+    public function setBestEnchere(?Enchere $bestEnchere): self
+    {
+        $this->bestEnchere = $bestEnchere;
 
         return $this;
     }

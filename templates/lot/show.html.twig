@@ -5,6 +5,7 @@
 {% block body %}
     <h1>{{ lot.nom }}</h1>
 
+
     <table class="table">
         <tbody>
             <tr>
@@ -17,7 +18,11 @@
             </tr>
             <tr>
                 <th>Meilleure enchère</th>
-                <td>{{ bestEnchere.montant }} €</td>
+                {% if bestEnchere != 'Aucune' %}
+                        <td>{{ bestEnchere.montant }} €</td>
+                {% else %}
+                    <td>Aucune</td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Statut</th>
@@ -26,7 +31,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('') }}">faire une enchère</a>
-    <a href="{{ path('lot_index') }}">back to list</a>
+    <br>
+    <h3>Faire une enchère</h3>
+    {{ include('enchere/_form.html.twig') }}
+
+    <br>
+    <a href="{{ path('vente_show', {'id': vente.id}) }}"><button type="button" class="btn btn-warning"><i class="fas fa-arrow-left"></i> Retour</button></a>
 
 {% endblock %}

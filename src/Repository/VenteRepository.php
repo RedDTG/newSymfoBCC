@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Vente;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method Vente|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,6 +36,22 @@ class VenteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+     /**
+      * @return Vente[] Returns an array of Vente objects
+      */
+
+    public function recupVenteNow()
+    {
+
+        return $this->getEntityManager()->createQuery(
+            'SELECT v
+            FROM App\Entity\Vente v
+            WHERE (v.dateDebut <= :date ) AND (v.dateFin >= :date )
+            ORDER BY v.dateFin ASC, v.heureFin ASC'
+        )->setParameter('date', date('Y-m-d H:i:s'))->getResult();
+
+    }
 
     /*
     public function findOneBySomeField($value): ?Vente

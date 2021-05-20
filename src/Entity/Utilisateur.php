@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
  */
-class Utilisateur
+class Utilisateur implements UserInterface
 {
     /**
      * @ORM\Id
@@ -44,9 +48,10 @@ class Utilisateur
 
     /**
      * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idPersonne;
+
 
     public function getId(): ?int
     {
@@ -129,4 +134,31 @@ class Utilisateur
 
         return $this;
     }
+
+    public function getEmail(): ?string
+    {
+        return $this->getIdPersonne()->getEmail();
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+        // Sel
+    }
+
+    public function getUsername()
+    {
+        return $this->getPseudo();
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
 }
