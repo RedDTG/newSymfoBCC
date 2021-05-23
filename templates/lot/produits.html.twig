@@ -7,13 +7,13 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>Etat</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Etat</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for produit in produits %}
@@ -28,10 +28,9 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucun produit trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}

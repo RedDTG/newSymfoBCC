@@ -48,6 +48,7 @@ class VenteController extends AbstractController
     #[Route('/{id}', name: 'vente_show', methods: ['GET'])]
     public function show(Vente $vente, LotRepository $lotRepository, EnchereRepository$encheres): Response
     {
+        $bestEncheres = array();
         foreach ($lotRepository->findAll() as $i => $lot ) {
             if ($lot->getIdVente() === $vente) {
                 $enchereByLot = $encheres->findBy(

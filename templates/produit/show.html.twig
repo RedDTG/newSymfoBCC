@@ -16,6 +16,10 @@
                 <td>{{ produit.nom }}</td>
             </tr>
             <tr>
+                <th>Lot</th>
+                <td>{{ produit.idLot.nom }}</td>
+            </tr>
+            <tr>
                 <th>Description</th>
                 <td>{{ produit.description }}</td>
             </tr>
@@ -28,7 +32,4 @@
 
     <a href="{{ path('produit_index') }}">back to list</a>
 
-    <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
-
-    {{ include('produit/_delete_form.html.twig') }}
 {% endblock %}

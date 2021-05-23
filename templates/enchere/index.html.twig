@@ -3,12 +3,12 @@
 {% block title %}Enchere index{% endblock %}
 
 {% block body %}
-    <h1>Enchere index</h1>
+    <h1>Encheres de {{ app.user.pseudo }}</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Lot</th>
                 <th>Montant</th>
                 <th>Acheteur</th>
                 <th>Date</th>
@@ -19,14 +19,13 @@
         <tbody>
         {% for enchere in encheres %}
             <tr>
-                <td>{{ enchere.id }}</td>
+                <td>{{ enchere.idLot.nom }}</td>
                 <td>{{ enchere.montant }}</td>
                 <td>{{ enchere.idUtilisateur.pseudo }}</td>
                 <td>{{ enchere.date ? enchere.date|date('Y-m-d') : '' }}</td>
                 <td>{{ enchere.heure ? enchere.heure|date('H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('enchere_show', {'id': enchere.id}) }}">show</a>
-                    <a href="{{ path('enchere_edit', {'id': enchere.id}) }}">edit</a>
+                    <a href="{{ path('lot_show', {'id': enchere.idLot.id}) }}">voir lot</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +36,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('enchere_new') }}">Create new</a>
 {% endblock %}

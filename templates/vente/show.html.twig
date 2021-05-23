@@ -12,7 +12,7 @@
                 <td>{{ vente.id }}</td>
             </tr>
             <tr>
-                <th>TypeDeVente</th>
+                <th>Nom de la vente</th>
                 <td>{{ vente.typeDeVente }}</td>
             </tr>
             <tr>
@@ -20,19 +20,19 @@
                 <td>{{ vente.devise }}</td>
             </tr>
             <tr>
-                <th>DateDebut</th>
+                <th>Date de début</th>
                 <td>{{ vente.dateDebut ? vente.dateDebut|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>DateFin</th>
+                <th>Date de fin</th>
                 <td>{{ vente.dateFin ? vente.dateFin|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>HeureDebut</th>
+                <th>Heure de début</th>
                 <td>{{ vente.heureDebut ? vente.heureDebut|date('H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>HeureFin</th>
+                <th>Heure de fin</th>
                 <td>{{ vente.heureFin ? vente.heureFin|date('H:i:s') : '' }}</td>
             </tr>
         </tbody>
@@ -67,7 +67,8 @@
                         {% endif %}
                     {% endfor %}</td>
                 <td>
-                    <a href="{{ path('lot_show', {'id': lot.id}) }}">enchérir</a>
+                    <a href="{{ path('lot_show', {'id': lot.id}) }}">Enchérir</a>
+                    <a href="{{ path('lot_produits', {'id': lot.id}) }}">Produits</a>
                 </td>
             </tr>
         {% else %}

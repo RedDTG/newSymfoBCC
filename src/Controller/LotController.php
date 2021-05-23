@@ -10,6 +10,7 @@ use App\Form\EnchereType;
 use App\Form\LotType;
 use App\Repository\EnchereRepository;
 use App\Repository\LotRepository;
+use App\Repository\ProduitRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,29 +24,34 @@ use Symfony\Component\Validator\Constraints\Date;
 class LotController extends AbstractController
 {
     #[Route('/', name: 'lot_index', methods: ['GET'])]
-    public function index(LotRepository $lotRepository): Response
+    public function index(LotRepository $lotRepository, EnchereRepository $encheres): Response
     {
+        foreach ($lotRepository->findAll() as $i => $lot ) {
+            $enchereByLot = $encheres->findBy(
+                ['idLot' => $lot->getId()],
+                ['montant' => 'DESC'], 1, 0);
+            if ($enchereByLot) {
+                $bestEncheres[$i] = $enchereByLot[0];
+            }
+            else {
+                $enchereVide = new Enchere();
+                $enchereVide->setIdLot($lotRepository->findAll()[$i]);
+                $enchereVide->setMontant(-1);
+                $bestEncheres[$i] = $enchereVide;
+            }
+        }
+
         return $this->render('lot/index.html.twig', [
             'lots' => $lotRepository->findAll(),
+            'bestEncheres' => $bestEncheres
         ]);
     }
 
     #[Route('/new', name: 'lot_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EnchereRepository $encheres, Lot $lot): Response
+    public function new(Request $request, EnchereRepository $encheres): Response
     {
-        $bestEnchere = $encheres->findBy(
-                ['idLot' => $lot->getId()],
-                ['montant' =>'DESC'])
-            [0] ?? 0;
-
-        $prixDepart = $lot->getPrixDepart();
-
-        if ($bestEnchere < $prixDepart) {
-            $bestEnchere = $prixDepart-1;
-        }
-
         $lot = new Lot();
-        $form = $this->createForm(LotType::class, $lot, array('bestEnchere' => $bestEnchere));
+        $form = $this->createForm(LotType::class, $lot);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,8 +69,9 @@ class LotController extends AbstractController
     }
 
     #[Route('/{id}', name: 'lot_show', methods: ['GET', 'POST'])]
-    public function show(Lot $lot, EnchereRepository $encheres, Vente $vente, Request $request, UserInterface $userInterface, UtilisateurRepository $utilisateurRep): Response
+    public function show(Lot $lot, EnchereRepository $encheres, Request $request, UserInterface $userInterface, UtilisateurRepository $utilisateurRep): Response
     {
+        $vente = $lot->getIdVente();
         $enchere = new Enchere();
         $enchere->setIdLot($lot);
         date_default_timezone_set('Europe/Paris');
@@ -73,7 +80,12 @@ class LotController extends AbstractController
         $enchere->setDate($date);
         $enchere->setIdUtilisateur($utilisateurRep->findBy(["pseudo" => $userInterface->getUsername()])[0]);
 
-        $form = $this->createForm(EnchereType::class, $enchere);
+        $bestEnchereForm = $encheres->findBy(
+            ['idLot' => $lot->getId()],
+            ['montant' =>'DESC'])
+        [0] ?? $lot->getPrixDepart() -1;
+
+        $form = $this->createForm(EnchereType::class, $enchere, array('bestEnchere' => $bestEnchereForm));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -152,13 +164,19 @@ class LotController extends AbstractController
             return $this->redirectToRoute('lot_index');
         }
 
-
-
-
         return $this->render('enchere/new.html.twig', [
             'enchere' => $enchere,
             'bestEnchere' => $bestEnchere,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/{id}/produits', name: 'lot_produits', methods: ['GET'])]
+    public function lotProduits(Lot $lot, ProduitRepository $produits): Response
+    {
+        return $this->render('lot/produits.html.twig', [
+            'produits' => $produits->findBy(['idLot' => $lot]),
+            '$lot' => $lot
         ]);
     }
 }

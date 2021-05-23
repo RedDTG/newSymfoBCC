@@ -28,27 +28,16 @@
 
                     <div class="collapse navbar-collapse" id="navbarText">
                         <ul class="navbar-nav me-auto">
-                            <li class="nav-item active">
-                                <a class="nav-item nav-link" href="/produit">Produits</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-item nav-link" href="/lot">Lots</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-item nav-link" href="/vente">Ventes</a>
-                            </li>
-                            <li>
-                                <a class="nav-item nav-link" href="/lieu">Lieux</a>
-                            </li>
-                            <li>
-                                <a class="nav-item nav-link" href="/utilisateur">Utilisateurs</a>
-                            </li>
-                            <li>
-                                <a class="nav-item nav-link" href="/personne">Personnes</a>
+                            <li class="nav-item active">
+                                <a class="nav-item nav-link" href="/produit">Produits</a>
                             </li>
                         </ul>
                         <span>
                             {% if app.user %}
+                                <a type="button" class="btn btn-primary" href="{{ path("enchere_index") }}">Mes enchères</a>
                                 <a type="button" class="btn btn-danger" href="{{ path("app_logout") }}">Déconnexion</a>
                             {% else %}
                                 <a type="button" class="btn btn-light" href="{{ path("app_login") }}">Connexion</a>

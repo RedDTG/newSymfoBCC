@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Enchere;
 use App\Form\EnchereType;
 use App\Repository\EnchereRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EnchereController extends AbstractController
 {
     #[Route('/', name: 'enchere_index', methods: ['GET'])]
-    public function index(EnchereRepository $enchereRepository): Response
+    public function index(EnchereRepository $enchereRepository, UserInterface $userInterface, UtilisateurRepository $users): Response
     {
+        $encheres = $enchereRepository->findBy(['idUtilisateur' => $users->findBy(['pseudo' => $userInterface->getUsername()])], ['date'=> 'ASC', 'idLot' => 'ASC','montant' => 'DESC']);
+
         return $this->render('enchere/index.html.twig', [
-            'encheres' => $enchereRepository->findAll(),
+            'encheres' => $encheres
         ]);
     }
 
